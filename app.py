@@ -113,8 +113,6 @@ def recibir_datos():
         return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
-    # Ejecuta solo si estás probando en local
-    simulate_extraction(WEBHOOK_URL, "imagen.jpg")
+    app.run()
 
-    # Correr el servidor Flask
-    app.run(host="0.0.0.0", port=10000)
+
